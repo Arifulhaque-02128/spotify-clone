@@ -22,7 +22,7 @@ const newAccessToken = async ( token ) => {
         console.error(error)
         return{
             ...token, 
-            error: "refreshAccessToken"
+            error: "refreshAccessTokenError"
         }
     }
 }
@@ -45,8 +45,6 @@ export default NextAuth({
 
   callbacks: {
       async jwt({ token, user, account }){
-
-        console.log("callbacks: ", token, user, account)
 
         // initial Sign In
           if( account && user ){

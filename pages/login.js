@@ -1,13 +1,14 @@
 import React from 'react'
 import Image from 'next/image'
 import { signIn, getProviders } from 'next-auth/react' 
+import logo from '../public/spotify_logo.png'
 
 function login({ providers }) {
     // console.log(Object.values(providers))
     return (
         <div className='flex flex-col items-center justify-center bg-black text-white min-h-screen'>
             <div>
-                <Image src="/spotify_logo.png" alt="Spotify Logo" width="256" height="256" />
+                <Image src={logo} alt="Spotify Logo" width="256" height="256" />
             </div>
             <div>
                 {

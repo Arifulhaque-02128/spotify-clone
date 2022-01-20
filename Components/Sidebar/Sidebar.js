@@ -1,14 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SearchIcon, LibraryIcon, HomeIcon, RssIcon, HeartIcon, PlusCircleIcon } from '@heroicons/react/outline';
 import { signOut, useSession } from 'next-auth/react'
-
+import useSpotify from '../../Hooks/useSpotify'
 
 function Sidebar() {
 
-    const { data } = useSession();
-    console.log(data);
+    const spotifyApi = useSpotify()
+    const { data: session } = useSession();
+    const [playlists, setPlaylists] = useState([]);
+    const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
 
+    useEffect(() => {
+        if(spotifyApi.getAccessToken()){
+            spotifyApi.getUserPlaylists().then( (data) => {
+                setPlaylists(data.body.items)
+            });
+        }
+    }, [session, spotifyApi]);
 
+    console.log("all playlist :", playlists)
+    console.log("selectedPlaylist : ", setSelectedPlaylistId)
     return (
         <div className="">
             <div className='flex-col text-gray-500'>
@@ -51,30 +62,17 @@ function Sidebar() {
 
 
             <div className='flex-col text-gray-500'>
-                <button className='flex items-center p-3 hover:text-white'>
-                    <p>My playlist songs</p>
-                </button>
-                <button className='flex items-center p-3 hover:text-white'>
-                    <p>My playlist songs</p>
-                </button>
-                <button className='flex items-center p-3 hover:text-white'>
-                    <p>My playlist songs</p>
-                </button>
-                <button className='flex items-center p-3 hover:text-white'>
-                    <p>My playlist songs</p>
-                </button>
-                <button className='flex items-center p-3 hover:text-white'>
-                    <p>My playlist songs</p>
-                </button>
-                <button className='flex items-center p-3 hover:text-white'>
-                    <p>My playlist songs</p>
-                </button>
-                <button className='flex items-center p-3 hover:text-white'>
-                    <p>My playlist songs</p>
-                </button>
-                <button className='flex items-center p-3 hover:text-white'>
-                    <p>My playlist songs</p>
-                </button>
+
+                {
+                    playlists.map((playlist) => 
+                        <button key={playlist.id} 
+                        className='flex items-center p-3 hover:text-white' 
+                        onClick={() => setSelectedPlaylistId(playlist.id)}>
+                            <p>{playlist.name}</p>
+                        </button>
+                    )
+                }
+
                 <hr className='border-black border-t-[0.1px] mb-5' />
             </div>
         </div>
