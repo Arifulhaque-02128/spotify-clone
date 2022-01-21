@@ -42,7 +42,7 @@ function Sidebar() {
                     <LibraryIcon className='h-5 w-5' />
                     <p className='mx-3'>Your Library</p>
                 </button>
-                <hr className='border-black border-t-[0.1px] mb-5' />
+                <hr className='border-gray-900 border-t-[0.1px] my-3 mx-4' />
             </div>
 
 
@@ -59,7 +59,7 @@ function Sidebar() {
                     <RssIcon className='h-5 w-5' />
                     <p className='mx-3'>Your Episodes</p>
                 </button>
-                <hr className='border-black border-t-[0.1px] mb-5' />
+                <hr className='border-gray-900 border-t-[0.1px] my-3 mx-4' />
             </div>
 
 

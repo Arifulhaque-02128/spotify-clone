@@ -7,6 +7,7 @@ import { shuffle } from 'lodash';
 import useSpotify from '../../Hooks/useSpotify';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { playlistIdState, playlistState } from '../../Atom/playlistAtom';
+import Songs from './Songs';
 
 
 const colors = [
@@ -37,16 +38,16 @@ function center() {
         }).catch((err) => console.log("something is going wrong : ", err))
     }, [spotifyApi, playlistId]);
 
-    console.log("id: ", playlistId);
-    console.log("playlist : ", playlist)
+    // console.log("id: ", playlistId);
+    // console.log("playlist : ", playlist)
 
     return (
-        <div className="w-full h-screen bg-black">
+        <div className="w-full h-screen bg-black overflow-y-scroll scrollbar-hide">
 
             <div>
                 {
                     session?.user && 
-                    <button className="flex bg-black rounded-3xl p-[1px] items-center text-white absolute top-0 right-10 m-4">
+                    <button className="flex bg-black rounded-3xl p-[2px] items-center text-white absolute top-0 right-10 m-4">
                         <Image className="rounded-full opacity-90 cursor-pointer hover:opacity-80" src={session?.user?.image} alt="Profile" width={40} height={40} />
                         <p className="text-white mx-2">{session.user?.name}</p>
                         <ChevronDownIcon className='h-6 w-6' />
@@ -63,12 +64,14 @@ function center() {
                         </div>
                         <div>
                             <p className="text-sm font-light">Playlist</p>
-                            <h2 className="text-3xl font-bold">{playlist.name}</h2>
+                            <h2 className="md:text-xl lg:text-3xl font-bold">{playlist.name}</h2>
                         </div>
                     </div>
                 }
 
             </section>
+
+            <Songs />
             
         </div>
     );
