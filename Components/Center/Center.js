@@ -4,6 +4,9 @@ import Image from 'next/image';
 import styles from './Center.module.css';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 import { shuffle } from 'lodash';
+import useSpotify from '../../Hooks/useSpotify';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { playlistIdState, playlistState } from '../../Atom/playlistAtom';
 
 
 const colors = [
@@ -18,12 +21,24 @@ const colors = [
 
 function center() {
 
+    const spotifyApi = useSpotify();    
     const { data: session } = useSession();
     const [color, setColor] = useState(null);
+    const playlistId = useRecoilValue(playlistIdState);
+    const [playlist, setPlaylist] = useRecoilState(playlistState);
 
     useEffect(() => {
         setColor(shuffle(colors).pop());
-    }, [])
+    }, [playlistId]);
+
+    useEffect(() => {
+        spotifyApi.getPlaylist(playlistId).then( (data) => {
+            setPlaylist(data.body)
+        }).catch((err) => console.log("something is going wrong : ", err))
+    }, [spotifyApi, playlistId]);
+
+    console.log("id: ", playlistId);
+    console.log("playlist : ", playlist)
 
     return (
         <div className="w-full h-screen bg-black">
@@ -40,9 +55,19 @@ function center() {
             </div>
 
             <section className={`flex text-white p-8 items-end h-80 bg-gradient-to-b to-black ${color}`}>
-                <p>
-                    this is center...
-                </p>
+
+                {
+                    playlist && <div className="flex items-center">
+                        <div>
+                            <img src={playlist?.images?.[0].url} alt="Playlist Image" className='w-[100px] h-[100px] mr-5' />
+                        </div>
+                        <div>
+                            <p className="text-sm font-light">Playlist</p>
+                            <h2 className="text-3xl font-bold">{playlist.name}</h2>
+                        </div>
+                    </div>
+                }
+
             </section>
             
         </div>

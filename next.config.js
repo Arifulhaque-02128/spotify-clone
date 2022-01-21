@@ -2,6 +2,6 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['i.scdn.co', 'i.scdn.co/image'],
+    domains: ['i.scdn.co', 'mosaic.scdn.co'],
   },
 }

@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { SearchIcon, LibraryIcon, HomeIcon, RssIcon, HeartIcon, PlusCircleIcon } from '@heroicons/react/outline';
 import { signOut, useSession } from 'next-auth/react'
 import useSpotify from '../../Hooks/useSpotify'
+import { useRecoilState } from 'recoil';
+import { playlistIdState } from '../../Atom/playlistAtom';
 
 function Sidebar() {
 
     const spotifyApi = useSpotify()
     const { data: session } = useSession();
     const [playlists, setPlaylists] = useState([]);
-    const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
+    const [selectedPlaylistId, setSelectedPlaylistId] = useRecoilState(playlistIdState);
 
     useEffect(() => {
         if(spotifyApi.getAccessToken()){
@@ -18,10 +20,10 @@ function Sidebar() {
         }
     }, [session, spotifyApi]);
 
-    console.log("all playlist :", playlists)
-    console.log("selectedPlaylist : ", setSelectedPlaylistId)
+    // console.log("all playlist :", playlists)
+    // console.log("selectedPlaylist : ", selectedPlaylistId)
     return (
-        <div className="">
+        <div className="sm:text-sm md:text-sm lg:text-base">
             <div className='flex-col text-gray-500'>
                 <button className='flex items-center my-3 hover:text-white'
                 onClick={() => signOut()}
@@ -65,8 +67,8 @@ function Sidebar() {
 
                 {
                     playlists.map((playlist) => 
-                        <button key={playlist.id} 
-                        className='flex items-center p-3 hover:text-white' 
+                        <button type="button" key={playlist.id} 
+                        className='flex items-center p-3 hover:text-white'
                         onClick={() => setSelectedPlaylistId(playlist.id)}>
                             <p>{playlist.name}</p>
                         </button>
